@@ -25,7 +25,9 @@ class Matrix_representator(object):
     def __init__(self, matrix_NxN):
         self.matrix_data = matrix_NxN
         print_matrix(self.matrix_data) 
+        
     def add(self, other_matrix_object):
         return sum_of_matrices(self.matrix_data, other_matrix_object.matrix_data)
+        
     def multiply_with(self, other_matrix_object):
         return multiply_of_matrices(self.matrix_data, other_matrix_object.matrix_data)
