@@ -35,13 +35,23 @@ class Matrix(object):
                          '(2x2) or scalar')
             return result
 
+    def __radd__(self, op1):
+        try:
+            result = deepcopy(self)
+            for tuple in self.coordinates_vector:
+                result.rows[tuple[0]][tuple[1]] += op1
+        except TypeError:
+            sys.exit('Error: Operands are not valid. They must be matrix'
+                     '(2x2) or scalar')
+        return result
+
     def __sub__(self, op1):
-        if type(op1) == type(self):  # Matrix + Matrix
+        if type(op1) == type(self):  # Matrix - Matrix
             result = deepcopy(self)
             for tuple in self.coordinates_vector:
                 result.rows[tuple[0]][tuple[1]] -= op1.rows[tuple[0]][tuple[1]]
             return result
-        else:  # Matrix + Scalar
+        else:  # Matrix - Scalar
             try:
                 result = deepcopy(self)
                 for tuple in self.coordinates_vector:
@@ -51,6 +61,16 @@ class Matrix(object):
                          ' (2x2) or scalar')
             return result
 
+    def __rsub__(self, op1):
+        try:
+            result = deepcopy(self)
+            for tuple in self.coordinates_vector:
+                result.rows[tuple[0]][tuple[1]] = (-1*(result.rows[tuple[0]][tuple[1]])) + op1
+        except TypeError:
+            sys.exit('Error: Operands are not valid. They must be matrix'
+                     ' (2x2) or scalar')
+        return result
+
     def prod(self, op1):
         C = [[0 for row in range(op1.ncols)] for col in range(self.nrows)]
         for i in range(self.nrows):
@@ -58,6 +78,16 @@ class Matrix(object):
                 for k in range(op1.nrows):
                     C[i][j] += self.rows[i][k] * op1.rows[k][j]
         result = Matrix(C)
+        return result
+
+    def prod_scalar(self, op1):
+        try:
+            result = deepcopy(self)
+            for tuple in self.coordinates_vector:
+                result.rows[tuple[0]][tuple[1]] = (result.rows[tuple[0]][tuple[1]])*op1
+        except TypeError:
+            sys.exit('Error: Operands are not valid. They must be matrix'
+                     ' (2x2) or scalar')
         return result
 
     def __iter__(self):
